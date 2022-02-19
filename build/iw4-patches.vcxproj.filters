@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{4E40957C-3A77-960D-E363-7C10CF79120F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\command">
+      <UniqueIdentifier>{7CBF790B-6822-09B0-11A8-4166FDE9D432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\exception">
+      <UniqueIdentifier>{AC25D4F4-98F3-C7FA-8187-38216DF4A35F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\host">
+      <UniqueIdentifier>{9B0F5DA5-077A-111C-50B8-C2C1BC61EF70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\misc">
+      <UniqueIdentifier>{E9B35FA5-551E-141C-9E5C-C5C10A06F270}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\network">
+      <UniqueIdentifier>{E7286B43-D38B-FAE7-7C11-339E6853C66A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\scheduler">
+      <UniqueIdentifier>{DC7E4672-C84C-3A78-B1E0-AA9E9D4D16DD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\security">
+      <UniqueIdentifier>{F50A4F26-61CB-CA5C-2A06-14DA96850F39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies">
+      <UniqueIdentifier>{8CAD9F58-7810-2FFD-2196-67B30DD8FA7F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies\game">
+      <UniqueIdentifier>{D5AA926A-41C1-9000-8A38-1C22F68D6188}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies\hooks">
+      <UniqueIdentifier>{FFD401BD-EBB8-C212-5419-BD65401CAD94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{169C8510-82B0-ADC1-4B32-5121B705AAF2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\core\command\command.hpp">
+      <Filter>core\command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\exception\exception.hpp">
+      <Filter>core\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\host\host.hpp">
+      <Filter>core\host</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\misc\misc.hpp">
+      <Filter>core\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\network\network.hpp">
+      <Filter>core\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\scheduler\scheduler.hpp">
+      <Filter>core\scheduler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\security\security.hpp">
+      <Filter>core\security</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\dependencies\game\game.hpp">
+      <Filter>dependencies\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\dependencies\game\offsets.hpp">
+      <Filter>dependencies\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\dependencies\game\structs.hpp">
+      <Filter>dependencies\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\dependencies\hooks\detours.hpp">
+      <Filter>dependencies\hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\dependencies\std_include.hpp">
+      <Filter>dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\utils\concurrency.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\utils\hook.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\utils\memory.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\utils\string.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\utils\utils.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\core\command\command.cpp">
+      <Filter>core\command</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\exception\exception.cpp">
+      <Filter>core\exception</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\host\host.cpp">
+      <Filter>core\host</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\main.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\misc\misc.cpp">
+      <Filter>core\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\network\network.cpp">
+      <Filter>core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\scheduler\scheduler.cpp">
+      <Filter>core\scheduler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\security\security.cpp">
+      <Filter>core\security</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\dependencies\game\game.cpp">
+      <Filter>dependencies\game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\utils\hook.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\utils\memory.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\utils\string.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\utils\utils.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
