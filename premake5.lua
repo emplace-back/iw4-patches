@@ -60,7 +60,7 @@ workspace "iw4-patches"
 
         optimize "debug"
         runtime "debug"
-        symbols "on"
+        symbols "off"
 
         targetname "iw4-patches-debug"
 
@@ -72,7 +72,7 @@ workspace "iw4-patches"
         
         optimize "off"
         runtime "release"
-        symbols "on"
+        symbols "off"
 
         targetname "iw4-patches-release"
 

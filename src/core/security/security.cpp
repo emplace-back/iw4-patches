@@ -67,11 +67,6 @@ namespace security
 			jmp rb_draw_stretch_pic_rotate_original;
 		}
 	}
-
-	void __cdecl callback_sv_packet_event(game::client_t* client)
-	{
-		game::send_server_command(-1, utils::string::va("f \"^1Freeze attempt caught! %s\"", network::get_sender_string(client->header.netchan.remoteAddress).data()));
-	}
 	
 	__declspec(naked) void sv_packet_event()
 	{
@@ -79,12 +74,6 @@ namespace security
 		{
 			test eax, eax; // client->reliableAcknowledge
 			jge fix;
-
-			pushad;
-			push edi;
-			call callback_sv_packet_event;
-			pop edi;
-			popad;
 
 			push 0x0058AD85;
 			retn;
