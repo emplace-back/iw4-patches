@@ -62,7 +62,7 @@
       <DisableSpecificWarnings>4005;4099;5054;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>NOMINMAX;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;DEBUG;STEAM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -71,7 +71,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalDependencies>detours.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\thirdparty\detours\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>bin\debug\iw4-patches-debug.lib</ImportLibrary>
@@ -87,7 +87,7 @@
       <DisableSpecificWarnings>4005;4099;5054;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>NOMINMAX;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;NDEBUG;STEAM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -96,7 +96,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalDependencies>detours.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\thirdparty\detours\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>bin\release\iw4-patches-release.lib</ImportLibrary>
@@ -109,6 +109,7 @@
     <ClInclude Include="..\src\core\command\command.hpp" />
     <ClInclude Include="..\src\core\exception\exception.hpp" />
     <ClInclude Include="..\src\core\host\host.hpp" />
+    <ClInclude Include="..\src\core\input\input.hpp" />
     <ClInclude Include="..\src\core\misc\misc.hpp" />
     <ClInclude Include="..\src\core\network\network.hpp" />
     <ClInclude Include="..\src\core\scheduler\scheduler.hpp" />
@@ -128,6 +129,7 @@
     <ClCompile Include="..\src\core\command\command.cpp" />
     <ClCompile Include="..\src\core\exception\exception.cpp" />
     <ClCompile Include="..\src\core\host\host.cpp" />
+    <ClCompile Include="..\src\core\input\input.cpp" />
     <ClCompile Include="..\src\core\main.cpp" />
     <ClCompile Include="..\src\core\misc\misc.cpp" />
     <ClCompile Include="..\src\core\network\network.cpp" />

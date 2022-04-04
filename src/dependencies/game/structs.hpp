@@ -863,6 +863,11 @@ namespace game
 		char pad3[0x48];
 		std::uint64_t player;
 		char pad4[0x28];
+
+		int map_pack_bits() const
+		{
+			return *reinterpret_cast<int*>(reinterpret_cast<uintptr_t>(this) + 0x64);
+		}
 	};
 
 #pragma pack(push, 4)
@@ -2737,9 +2742,11 @@ namespace game
 		char pad[0x2083C];
 		int bIsTestClient;
 		int serverId;
-		char pad2[0x2404];
+		char pad2[0x2401];
+		bool sendPlayerData;
 		std::uint64_t steamId;
 		bool sendMatchData;
+		int lastSentTime;
 		char pad3[0x62880];
 	};
 

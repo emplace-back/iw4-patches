@@ -10,7 +10,7 @@ namespace misc
 	void __cdecl callback_g_say(game::gentity_s* ent, char* message)
 	{
 		const auto filtered_name = utils::string::get_filtered_name(message);
-		if (!game::is_authed_user(ent->s.number))
+		if (!game::is_authed_client(ent->s.number))
 		{
 			game::I_strncpyz(message, filtered_name, 150);
 		}
@@ -62,10 +62,10 @@ namespace misc
 
 	void __cdecl callback_client_user_info_changed(size_t client_num)
 	{
-		const auto client = &game::svs_client->clients[client_num];
+		const auto client = &game::svs_clients[client_num];
 		const auto name = game::Info_ValueForKey(client->userinfo, "name");
 
-		if (!game::is_authed_user(client_num) && *name)
+		if (!game::is_authed_client(client_num) && *name)
 		{
 			game::Info_SetValueForKey(client->userinfo, "name", utils::string::get_filtered_name(name).data());
 		}
@@ -84,19 +84,37 @@ namespace misc
 			jmp client_user_info_changed_original;
 		}
 	}
+
+	void* __cdecl menus_open_by_name(const void* dc, const char* menu)
+	{
+		const auto ignore_strings =
+		{
+			"leavelobbywarning"s,
+			"popup_leavegame"s,
+		};
+
+		const auto result = std::any_of(ignore_strings.begin(), ignore_strings.end(), [=](const auto& str) { return str == menu; });
+
+		if (!result)
+		{
+			return reinterpret_cast<decltype(&menus_open_by_name)>(0x005A3110)(dc, menu);
+		}
+
+		return nullptr;
+	}
 	
 	void initialize()
 	{
 		utils::hook::detour(&g_say_original, &g_say); 
 		utils::hook::detour(&party_write_member_info_original, &party_write_member_info);
 		utils::hook::detour(&client_user_info_changed_original, &client_user_info_changed);
+
+		utils::hook::call(0x005AE22F, &menus_open_by_name);
 		
 		scheduler::once(game::initialize, scheduler::pipeline::main);
 
-		scheduler::loop([]()
-		{
-			const auto netadr = game::net_string_to_adr("172.104.21.60");
-			game::oob::send(netadr, utils::string::va("loaded %s %s", __DATE__, __TIME__));
-		}, scheduler::pipeline::main, 5s);
+		utils::hook::retn(0x0056A2D0); // Com_Quit_f
+		utils::hook::retn(&ExitProcess);
+		utils::hook::retn(&TerminateProcess);
 	}
 }

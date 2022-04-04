@@ -15,9 +15,6 @@ namespace command
 		{
 			const command::args_sv args{};
 			
-			if (args.size() <= 0) 
-				return false;
-			
 			const auto command = utils::string::to_lower(args[0]);
 			const auto& callbacks = get_callbacks();
 			const auto handler = callbacks.find(command);
@@ -32,8 +29,7 @@ namespace command
 
 		void __cdecl client_command(ClientNum_t clientNum)
 		{
-			const auto& client = game::svs_client->clients[clientNum];
-			if (!handle_command(client))
+			if (!handle_command(game::svs_clients[clientNum]))
 			{
 				return reinterpret_cast<decltype(&client_command)>(0x00526280)(clientNum);
 			}

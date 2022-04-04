@@ -13,9 +13,6 @@ namespace host
 	{
 		utils::hook::call(0x0053B430, &sv_set_config_string); 
 
-		if (!game::IsServerRunning())
-			return;
-
-		game::SV_SetConfigstring(2482, "uiScript_startSingleplayer");
+		utils::hook::retn(0x0053C0A0); // ScrCmd_SetMoveSpeedScale
 	}
 }

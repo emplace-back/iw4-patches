@@ -13,6 +13,9 @@
     <Filter Include="core\host">
       <UniqueIdentifier>{9B0F5DA5-077A-111C-50B8-C2C1BC61EF70}</UniqueIdentifier>
     </Filter>
+    <Filter Include="core\input">
+      <UniqueIdentifier>{ED821051-D93A-529E-4242-2BFA2E19ED8E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="core\misc">
       <UniqueIdentifier>{E9B35FA5-551E-141C-9E5C-C5C10A06F270}</UniqueIdentifier>
     </Filter>
@@ -47,6 +50,9 @@
     </ClInclude>
     <ClInclude Include="..\src\core\host\host.hpp">
       <Filter>core\host</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\input\input.hpp">
+      <Filter>core\input</Filter>
     </ClInclude>
     <ClInclude Include="..\src\core\misc\misc.hpp">
       <Filter>core\misc</Filter>
@@ -100,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="..\src\core\host\host.cpp">
       <Filter>core\host</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\input\input.cpp">
+      <Filter>core\input</Filter>
     </ClCompile>
     <ClCompile Include="..\src\core\main.cpp">
       <Filter>core</Filter>

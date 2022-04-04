@@ -3,16 +3,32 @@
 
 namespace security
 {
-	constexpr auto OVERFLOW_PASSWORD{ "aUmwdwevwDnr3ude4" };
 	auto rb_draw_stretch_pic_rotate_original = reinterpret_cast<decltype(&rb_draw_stretch_pic_rotate)>(0x00438CF0);
-	auto sv_packet_event_original = reinterpret_cast<decltype(&sv_packet_event)>(0x0058AD71);
 	auto sv_drop_client_original = reinterpret_cast<decltype(&sv_drop_client)>(0x00585E30);
+	
+	void __cdecl sv_update_server_commands_to_client(game::client_t* client, game::msg_t* msg)
+	{
+		if (client->reliableAcknowledge < 0)
+		{
+			game::for_each_authed_client(18, [=](const auto& index)
+			{
+				game::send_server_command(index, 
+					utils::string::va("f \"Freeze attempt caught! from %s\"", network::get_sender_string(client->header.netchan.remoteAddress).data()));
+			});
+		}
+
+		return reinterpret_cast<void(*)(game::client_t*, game::msg_t*, int)>(0x0058F400)(client, msg, 0x20000);
+	}
 	
 	void __cdecl net_defer_packet_to_client(game::netadr_t *net_from, game::msg_t *net_message)
 	{
 		if (net_message->cursize < 0 || net_message->cursize > 1404)
 		{
-			game::send_server_command(-1, utils::string::va("f \"^1Exploit attempt caught! %s\"", network::get_sender_string(*net_from).data()));
+			game::for_each_authed_client(18, [=](const auto& index)
+			{
+				game::send_server_command(index, utils::string::va("f \"Exploit attempt caught! from %s\"", network::get_sender_string(*net_from).data()));
+			});
+			
 			return;
 		}
 
@@ -24,7 +40,7 @@ namespace security
 		const auto client_num{ game::get_client_num(drop) };
 		const auto return_address{ reinterpret_cast<std::uintptr_t>(_ReturnAddress()) };
 
-		if (game::is_authed_user(client_num) && (reason && *reason || tellThem) && return_address != 0x00586591)
+		if (game::is_authed_client(client_num) && (reason && *reason || tellThem) && return_address != 0x00586591)
 		{
 			auto message{ "SV_DropClient called"s };
 			if (reason && *reason) message.append(" with reason: "s + reason);
@@ -68,31 +84,13 @@ namespace security
 		}
 	}
 	
-	__declspec(naked) void sv_packet_event()
-	{
-		__asm
-		{
-			test eax, eax; // client->reliableAcknowledge
-			jge fix;
-
-			push 0x0058AD85;
-			retn;
-
-		fix:
-			jmp sv_packet_event_original;
-		}
-	}
-	
 	void initialize()
 	{
 		utils::hook::detour(&rb_draw_stretch_pic_rotate_original, &rb_draw_stretch_pic_rotate);
-		utils::hook::detour(&sv_packet_event_original, &sv_packet_event);
 		utils::hook::detour(&sv_drop_client_original, &sv_drop_client);
 
+		utils::hook::jump(0x0058F380, &sv_update_server_commands_to_client); 
 		utils::hook::call(0x0058AC3A, &net_defer_packet_to_client);
-		
-		utils::hook::set<std::uint8_t>(0x0058F3DD, 0x76); // SV_UpdateServerCommandsToClient
-		utils::hook::set<std::uint8_t>(0x0058F415, 0x77); // SV_UpdateServerCommandsToClient_PreventOverflow
 		
 		command::on_command("mr", [](const auto& args, const auto& client)
 		{
@@ -104,22 +102,30 @@ namespace security
 
 			if (menu_index == 2)
 			{
-				if (game::Dvar_FindVar("xblive_privatematch")->current.enabled || game::is_authed_user(client))
+				if (game::Dvar_FindVar("xblive_privatematch")->current.enabled || game::is_authed_client(client))
 				{
 					return false;
 				}
 
-				game::send_server_command(-1, utils::string::va("f \"^5'%s'^7 attempted to change their team.\"", client.name));
+				game::for_each_authed_client(18, [&client](const auto& index)
+				{
+					game::send_server_command(index, utils::string::va("f \"^5'%s'^7 attempted to change their team.\"", client.name));
+				});
+
 				return true;
 			}
 			else if (response == "endround")
 			{
-				if (client.header.netchan.remoteAddress.type == game::NA_LOOPBACK || game::is_authed_user(client))
+				if (game::is_authed_client(client))
 				{
 					return false;
 				}
 
-				game::send_server_command(-1, utils::string::va("f \"^5'%s'^7 attempted to end the game.\"", client.name));
+				game::for_each_authed_client(18, [&client](const auto& index)
+				{
+					game::send_server_command(index, utils::string::va("f \"^5'%s'^7 attempted to end the game.\"", client.name));
+				});
+
 				return true;
 			}
 				
@@ -149,31 +155,51 @@ namespace security
 		
 		network::on_command("joinParty", [](const auto& args, const auto& target, const auto&)
 		{
-			const auto new_sub_party_count = utils::atoi(args[7]);
-			const auto password = args[8];
-			
-			if (new_sub_party_count < 18 || password == "pw"s + OVERFLOW_PASSWORD)
+			const auto count = utils::atoi<int>(args[7]);
+			const auto overflown = count > 18;
+
+			if (overflown)
 			{
-				return false;
+				if (game::is_authed_client(target))
+				{
+					return false;
+				}
+
+				game::for_each_authed_client(18, [=](const auto& index)
+				{
+					game::send_server_command(index, utils::string::va("f \"RCE prevented! from %s\"", network::get_sender_string(target).data()));
+				});
+
+				return true;
 			}
-			
-			game::send_server_command(-1, utils::string::va("f \"^1RCE prevented! %s\"", network::get_sender_string(target).data())); 
-			return true;
+
+			return false;
 		});
 		
-		network::on_command("relay", [](const auto& args, const auto& target, const auto& msg)
+		network::on_command("relay", [](const auto& args, const auto& target, auto& msg)
 		{
 			const auto client_num = utils::atoi(args[1]);
+
 			if (client_num >= 18)
 			{
-				game::send_server_command(-1, utils::string::va("f \"^1Crash attempt caught! %s\"", network::get_sender_string(target).data()));
+				game::for_each_authed_client(18, [=](const auto& index)
+				{
+					game::send_server_command(index, utils::string::va("f \"Crash attempt caught! from %s\"", network::get_sender_string(target).data()));
+				});
+
 				return true;
 			}
 				
-			if (game::is_authed_user(client_num))
+			if (game::is_authed_client(client_num))
 			{
-				const auto packet = std::string{ msg.data + msg.readcount, static_cast<std::string::size_type>(msg.cursize - msg.readcount) }; 
-				game::send_server_command(client_num, utils::string::va("f \"^1Relay packet '%s' prevented! %s\"", utils::string::strip(packet).data(), network::get_sender_string(target).data()));
+				char data[1024] = { 0 };
+				game::MSG_ReadString(&msg, data, sizeof data);
+
+				auto message{ "Relay packet prevented"s };
+				if (data && *data) message.append(" ["s + utils::string::strip(data) + "]");
+				message.append(" from " + network::get_sender_string(target));
+				game::send_server_command(client_num, "f \"" + message + "\"");
+				
 				return true;
 			}
 

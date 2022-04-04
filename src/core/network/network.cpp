@@ -31,9 +31,7 @@ namespace network
 			const auto handler = callbacks.find(oob_string);
 
 			if (handler == callbacks.end())
-			{
 				return false;
-			}
 
 			const auto msg_backup = msg;
 			const auto callback = handler->second(args, from, msg);

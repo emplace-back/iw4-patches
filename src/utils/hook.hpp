@@ -82,4 +82,9 @@ namespace utils::hook
 	{
 		return set<std::uint8_t>(reinterpret_cast<void*>(place), static_cast<std::uint8_t>(instructions::retn));
 	}
+
+	static void retn(const void* place)
+	{
+		return retn(reinterpret_cast<size_t>(place));
+	}
 }

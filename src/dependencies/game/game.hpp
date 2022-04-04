@@ -8,9 +8,10 @@ namespace game
 {
 	namespace oob
 	{
-		bool send(const game::netadr_t & target, const std::string & data);
+		bool send(const netadr_t & target, const std::string & data);
 	}
 	
+	const static auto MSG_ReadBigString = reinterpret_cast<const char*(*)(msg_t*)>(0x005703D0); 
 	const static auto SV_SetConfigstring = reinterpret_cast<void(*)(int, const char*)>(0x00589C20);
 	const static auto SV_Loaded = reinterpret_cast<bool(*)()>(0x00589460);
 	const static auto Steam_GetInviteHostAddr = reinterpret_cast<XNADDR*(*)()>(0x00627760);
@@ -46,7 +47,7 @@ namespace game
 	const static auto SV_GameSendServerCommand = reinterpret_cast<void(*)(ClientNum_t clientNum, std::uint32_t type, const char *text)>(0x00588480);
 	const static auto Cbuf_AddText = reinterpret_cast<void(*)(LocalClientNum_t localClientNum, const char *text)>(0x00563D10);
 	const static auto Cbuf_ExecuteBuffer = reinterpret_cast<void(*)(LocalClientNum_t localClientNum, int a2, const char *text)>(0x00564A30);
-	const static auto G_Say = reinterpret_cast<void(*)(game::gentity_s*, game::gentity_s*, int, const char*)>(0x005260E0);
+	const static auto G_Say = reinterpret_cast<void(*)(gentity_s*, gentity_s*, int, const char*)>(0x005260E0);
 	const static auto CG_GameMessage = reinterpret_cast<void(*)(LocalClientNum_t localClientNum, const char* message)>(0x00497600);
 	const static auto CG_BoldGameMessage = reinterpret_cast<void(*)(LocalClientNum_t localClientNum, const char* message)>(0x00497630);
 	const static auto Sys_Milliseconds = reinterpret_cast<std::uint32_t(*)()>(0x005CA750);
@@ -56,7 +57,7 @@ namespace game
 	const static auto CL_SendPeerVoiceData = reinterpret_cast<bool(*)(void*, int, netsrc_t, int, msg_t*, bool)>(0x004CBC80);
 	const static auto Sys_SendPacket = reinterpret_cast<bool(*)(netsrc_t sock, size_t len, const char* format, netadr_t netadr)>(0x005C9930);
 	const static auto NET_SendPacket = reinterpret_cast<bool(*)(netsrc_t sock, int length, const void *data, netadr_t to)>(0x005733A0);
-	const static auto RMsg_AddMessage = reinterpret_cast<bool(*)(const netadr_t* adr, game::msg_t* msg)>(0x005C3020);
+	const static auto RMsg_AddMessage = reinterpret_cast<bool(*)(const netadr_t* adr, msg_t* msg)>(0x005C3020);
 	const static auto RMsg_AddPrint = reinterpret_cast<bool(*)(netadr_t* adr, const char* message)>(0x005C3050);
 	const static auto Info_ValueForKey = reinterpret_cast<char*(*)(const char *s, const char *key)>(0x005C2040);
 	const static auto Info_SetValueForKey = reinterpret_cast<char*(*)(char *s, const char *key, const char *value)>(0x005C2460);
@@ -64,45 +65,45 @@ namespace game
 	const static auto Cmd_Argv = reinterpret_cast<char*(*)(int index)>(0x00426A20);
 	const static auto Live_GetXuid = reinterpret_cast<std::uint64_t(*)(ControllerIndex_t controllerIndex)>(0x005C7190);
 	const static auto Steam_GetUid = reinterpret_cast<std::uint64_t(*)()>(0x00627730);
-	const static auto MSG_Init = reinterpret_cast<void(*)(game::msg_t * buf, char* data, int length)>(0x0056FA70);
-	const static auto MSG_WriteData = reinterpret_cast<void(*)(game::msg_t *buf, const void *data, int length)>(0x0056FE30);
-	const static auto MSG_WriteString = reinterpret_cast<void(*)(game::msg_t * msg, const char* s)>(0x0056FF60);
-	const static auto MSG_WriteBigString = reinterpret_cast<void(*)(game::msg_t * msg, const char* s)>(0x005700D0);
-	const static auto MSG_WriteByte = reinterpret_cast<void(*)(game::msg_t * msg, int c)>(0x0056FDE0);
-	const static auto MSG_WriteShort = reinterpret_cast<void(*)(game::msg_t * msg, int c)>(0x0056FE70);
-	const static auto MSG_WriteInt64 = reinterpret_cast<void(*)(game::msg_t * msg, std::uint64_t c)>(0x0056FF10);
-	const static auto MSG_WriteLong = reinterpret_cast<void(*)(game::msg_t *msg, int c)>(0x0056FEC0);
-	const static auto MSG_WriteBits = reinterpret_cast<void(*)(game::msg_t *msg, int value, int bits)>(0x0056FCA0);
-	const static auto MSG_WriteBit0 = reinterpret_cast<void(*)(game::msg_t *msg)>(0x0056FC10);
-	const static auto MSG_WriteBit1 = reinterpret_cast<void(*)(game::msg_t *msg)>(0x0056FC50);
-	const static auto MSG_Discard = reinterpret_cast<int(*)(game::msg_t *msg)>(0x0056FB70);
-	const static auto MSG_ClearLastReferencedEntity = reinterpret_cast<void(*)(game::msg_t *msg)>(0x005713F0);
+	const static auto MSG_Init = reinterpret_cast<void(*)(msg_t * buf, char* data, int length)>(0x0056FA70);
+	const static auto MSG_WriteData = reinterpret_cast<void(*)(msg_t *buf, const void *data, int length)>(0x0056FE30);
+	const static auto MSG_WriteString = reinterpret_cast<void(*)(msg_t * msg, const char* s)>(0x0056FF60);
+	const static auto MSG_WriteBigString = reinterpret_cast<void(*)(msg_t * msg, const char* s)>(0x005700D0);
+	const static auto MSG_WriteByte = reinterpret_cast<void(*)(msg_t * msg, int c)>(0x0056FDE0);
+	const static auto MSG_WriteShort = reinterpret_cast<void(*)(msg_t * msg, int c)>(0x0056FE70);
+	const static auto MSG_WriteInt64 = reinterpret_cast<void(*)(msg_t * msg, std::uint64_t c)>(0x0056FF10);
+	const static auto MSG_WriteLong = reinterpret_cast<void(*)(msg_t *msg, int c)>(0x0056FEC0);
+	const static auto MSG_WriteBits = reinterpret_cast<void(*)(msg_t *msg, int value, int bits)>(0x0056FCA0);
+	const static auto MSG_WriteBit0 = reinterpret_cast<void(*)(msg_t *msg)>(0x0056FC10);
+	const static auto MSG_WriteBit1 = reinterpret_cast<void(*)(msg_t *msg)>(0x0056FC50);
+	const static auto MSG_Discard = reinterpret_cast<int(*)(msg_t *msg)>(0x0056FB70);
+	const static auto MSG_ClearLastReferencedEntity = reinterpret_cast<void(*)(msg_t *msg)>(0x005713F0);
 	const static auto Scr_GetScrambleBuf = reinterpret_cast<int(*)(std::uint32_t)>(0x0057A010);
 	const static auto CL_CanWeConnectToClient = reinterpret_cast<int(*)(const void *sessionData, ClientNum_t ourClientNum, ClientNum_t theirClientNum)>(0x004CB520);
 	const static auto Live_GetCurrentSession = reinterpret_cast<void*(*)()>(0x005C7160);
-	const static auto NET_StringToAdr = reinterpret_cast<bool(*)(const char* s, game::netadr_t* a)>(0x00573600);
+	const static auto NET_StringToAdr = reinterpret_cast<bool(*)(const char* s, netadr_t* a)>(0x00573600);
 	const static auto BigShort = reinterpret_cast<std::uint16_t(*)(std::uint16_t)>(0x005C18A0);
 	const static auto CL_IsLocalClientInGame = reinterpret_cast<bool(*)()>(0x004C4EA0);
 	const static auto Steam_SendIntroducerMSG = reinterpret_cast<void(*)(std::uint64_t)>(0x006298E0);
 	const static auto Com_Quit_f = reinterpret_cast<void(*)()>(0x0056A2D0);
-	const static auto Party_FindMember = reinterpret_cast<int(*)(game::PartyData_s * party, game::netadr_t playerAddr)>(0x004D2CC0);
+	const static auto Party_FindMember = reinterpret_cast<int(*)(PartyData_s * party, netadr_t playerAddr)>(0x004D2CC0);
 	const static auto NET_CompareAdr = reinterpret_cast<bool(*)(netadr_t a, netadr_t b)>(0x00572FD0);
 	const static auto StringToXNAddr = reinterpret_cast<bool(*)(const char*, XNADDR*)>(0x005737F0);
 	const static auto NET_CompareBaseAdr = reinterpret_cast<bool(*)(netadr_t a, netadr_t b)>(0x00572E30);
-	const static auto DB_GetXAssetName = reinterpret_cast<const char*(*)(const game::XAsset*)>(0x004DFDE0);
+	const static auto DB_GetXAssetName = reinterpret_cast<const char*(*)(const XAsset*)>(0x004DFDE0);
 	const static auto DB_EnumXAssets_Internal = reinterpret_cast<void(*)(XAssetType type, void(*)(XAssetHeader, void*), const void* inData, bool includeOverride)>(0x004F15B0);
 	const static auto Steam_GetSteamLobbyID = reinterpret_cast<std::uint64_t(*)()>(0x00627770);
 	const static auto Steam_JoinLobby = reinterpret_cast<bool(*)(std::uint64_t xuid, bool b)>(0x00629170);
-	const static auto Party_AskToJoinParty = reinterpret_cast<bool(*)(game::PartyData_s*, int b, int c)>(0x004D4ED0);
+	const static auto Party_AskToJoinParty = reinterpret_cast<bool(*)(PartyData_s*, int b, int c)>(0x004D4ED0);
 	const static auto Live_StartAcceptingInvitation = reinterpret_cast<int(*)(std::uint64_t, bool b)>(0x005C8050);
 	const static auto Cmd_AddCommandInternal = reinterpret_cast<std::uint32_t(*)(const char *cmdName, void(__cdecl *function)(), cmd_function_s *allocedCmd)>(0x00564460);
-	const static auto MSG_ReadByte = reinterpret_cast<std::uint8_t(*)(game::msg_t* msg)>(0x005701E0);
+	const static auto MSG_ReadByte = reinterpret_cast<std::uint8_t(*)(msg_t* msg)>(0x005701E0);
 	const static auto MSG_ReadStringLine = reinterpret_cast<char*(*)(msg_t *msg, char *string, unsigned int maxChars)>(0x00570430);
 	const static auto Scr_IsValidGameType = reinterpret_cast<bool(*)(const char*)>(0x00547C00);
 	const static auto MSG_ReadString = reinterpret_cast<char*(*)(msg_t *msg, char *string, unsigned int maxChars)>(0x00570380);
-	const static auto MSG_ReadData = reinterpret_cast<void*(*)(game::msg_t* msg, const void* data, size_t)>(0x005704C0);
-	const static auto MSG_ReadLong = reinterpret_cast<std::uint32_t(*)(game::msg_t* msg)>(0x005702C0);
-	const static auto MSG_ReadShort = reinterpret_cast<std::uint16_t(*)(game::msg_t* msg)>(0x00570260);
+	const static auto MSG_ReadData = reinterpret_cast<void*(*)(msg_t* msg, const void* data, size_t)>(0x005704C0);
+	const static auto MSG_ReadLong = reinterpret_cast<std::uint32_t(*)(msg_t* msg)>(0x005702C0);
+	const static auto MSG_ReadShort = reinterpret_cast<std::uint16_t(*)(msg_t* msg)>(0x00570260);
 	const static auto CL_GetClientName = reinterpret_cast<char*(*)(LocalClientNum_t, int, char*, int)>(0x004CB370);
 	const static auto IsServerRunning = reinterpret_cast<bool(*)()>(0x005C7530);
 	const static auto LiveStorage_GetPersistentDataBuffer = reinterpret_cast<void*(*)(LocalClientNum_t)>(0x00566D10);
@@ -116,14 +117,14 @@ namespace game
 	const static auto GScr_AllocString = reinterpret_cast<std::uint32_t(*)(const char* s)>(0x00539B50);
 	const static auto CG_GetPlayerViewOrigin = reinterpret_cast<std::uint32_t(*)(LocalClientNum_t, const playerState_s*, Vec3*)>(0x004B4480);
 	const static auto Com_GetClientDObj = reinterpret_cast<char*(*)(int handle)>(0x0056B8E0);
-	const static auto CG_DObjGetWorldTagPos = reinterpret_cast<std::uint32_t(*)(const game::centity_t * entity, void* obj, std::uint32_t tagName, Vec3* pos)>(0x0048E720);
+	const static auto CG_DObjGetWorldTagPos = reinterpret_cast<std::uint32_t(*)(const centity_t * entity, void* obj, std::uint32_t tagName, Vec3* pos)>(0x0048E720);
 	const static auto vectoangles = reinterpret_cast<void(*)(const Vec3* vec, Vec3* angles)>(0x005B41F0);
-	const static auto BG_GetViewmodelWeaponIndex = reinterpret_cast<int(*)(const game::playerState_s*)>(0x004795C0);
-	const static auto Trace_GetEntityHitId = reinterpret_cast<std::uint16_t(*)(const game::trace_t* results)>(0x0055D550);
+	const static auto BG_GetViewmodelWeaponIndex = reinterpret_cast<int(*)(const playerState_s*)>(0x004795C0);
+	const static auto Trace_GetEntityHitId = reinterpret_cast<std::uint16_t(*)(const trace_t* results)>(0x0055D550);
 	const static auto CG_ClientHasPerk = reinterpret_cast<bool(*)(std::uint32_t* perk, std::uint32_t b)>(0x0045FAE0);
 	const static auto BG_GetSurfacePenetrationDepth = reinterpret_cast<float(*)(WeaponDef* weapon, int surfaceType)>(0x00479430);
-	const static auto BG_AdvanceTrace = reinterpret_cast<bool(*)(game::BulletFireParams* bp, game::BulletTraceResults* br, float distance)>(0x00479A80);
-	const static auto BG_GetSpreadForWeapon = reinterpret_cast<void(*)(game::playerState_s const*, WeaponDef*, float*, float*)>(0x0047A1A0);
+	const static auto BG_AdvanceTrace = reinterpret_cast<bool(*)(BulletFireParams* bp, BulletTraceResults* br, float distance)>(0x00479A80);
+	const static auto BG_GetSpreadForWeapon = reinterpret_cast<void(*)(playerState_s const*, WeaponDef*, float*, float*)>(0x0047A1A0);
 	const static auto AngleVectors = reinterpret_cast<void(*)(const Vec3 * angles, Vec3 * forward, Vec3 * right, Vec3 * up)>(0x005B74E0);
 	const static auto ClampChar = reinterpret_cast<char(*)(int)>(0x005B38F0);
 	const static auto BG_srand = reinterpret_cast<std::uint32_t*(*)(std::uint32_t* serverTime)>(0x00472230);
@@ -148,26 +149,26 @@ namespace game
 	const static auto SL_ConvertToString = reinterpret_cast<const char*(*)(unsigned int stringValue)>(0x00579AF0);
 	const static auto BG_GetNumWeapons = reinterpret_cast<std::uint32_t(*)()>(0x00479600);
 	const static auto Material_RegisterHandle = reinterpret_cast<Material*(*)(const char*)>(0x0040FD60);
-	const static auto SV_AddTestClient = reinterpret_cast<game::gentity_s*(*)()>(0x00588280);
+	const static auto SV_AddTestClient = reinterpret_cast<gentity_s*(*)()>(0x00588280);
 	const static auto Xenon_GetXNAddr = reinterpret_cast<XNADDR*(*)()>(0x005C72F0);
 	const static auto Dvar_ValueToString = reinterpret_cast<const char*(*)(dvar_t*, DvarValue)>(0x005BBFB0);
 	const static auto Dvar_IsValidName = reinterpret_cast<bool(*)(const char*)>(0x005BBCA0);
 	const static auto SendToHost = reinterpret_cast<void(*)(const char *cmd, int len)>(0x004C88C0);
 	const static auto GetHostRating = reinterpret_cast<int(*)()>(0x004C8C10);
 	const static auto PartyMigrate_GetClientConnectivity = reinterpret_cast<int(*)(void*, LocalClientNum_t)>(0x004DC350);
-	const static auto SV_BeginClientSnapshot = reinterpret_cast<void(*)(game::client_t*, game::msg_t*, char*)>(0x0058F6C0);
-	const static auto SV_WriteSnapshotToClient = reinterpret_cast<void(*)(game::client_t*, game::msg_t*, bool, bool)>(0x0058EF80);
-	const static auto SV_SendMessageToClient = reinterpret_cast<void(*)(game::msg_t*, game::client_t*)>(0x0058F4D0);
+	const static auto SV_BeginClientSnapshot = reinterpret_cast<void(*)(client_t*, msg_t*, char*)>(0x0058F6C0);
+	const static auto SV_WriteSnapshotToClient = reinterpret_cast<void(*)(client_t*, msg_t*, bool, bool)>(0x0058EF80);
+	const static auto SV_SendMessageToClient = reinterpret_cast<void(*)(msg_t*, client_t*)>(0x0058F4D0);
 	const static auto Session_IsUserRegistered = reinterpret_cast<bool(*)(void*, size_t)>(0x00621340);
 	const static auto SV_Cmd_Argv = reinterpret_cast<char*(*)(int argIndex)>(0x00563C60);
 	const static auto& bg_lastParsedWeaponIndex = *reinterpret_cast<std::uint32_t*>(0x00873D84);
 	const static auto& map_handler = reinterpret_cast<MapnameRichPresenceInfo*>(0x006AC1D8); 
-	const static auto& g_partyData = reinterpret_cast<game::PartyData_s*>(0x010F5A98);
-	const static auto& g_lobbyData = reinterpret_cast<game::PartyData_s*>(0x010F9268); 
+	const static auto& g_partyData = reinterpret_cast<PartyData_s*>(0x010F5A98);
+	const static auto& g_lobbyData = reinterpret_cast<PartyData_s*>(0x010F9268); 
 	const static auto& match_data = reinterpret_cast<void*>(offsets::match_data);
 	const static auto& s_sortedDvars = reinterpret_cast<dvar_t**>(0x0637C470);
 	const static auto& g_dvarCount = *reinterpret_cast<std::uint32_t*>(0x0637C448);
-	const static auto& cmd_functions = reinterpret_cast<game::cmd_function_s*>(0x01B741D0);
+	const static auto& cmd_functions = reinterpret_cast<cmd_function_s*>(0x01B741D0);
 	const static auto& ucmds = reinterpret_cast<ucmd_t*>(0x0085AF58);
 	const static auto& g_ourXnaddr = reinterpret_cast<XNADDR*>(0x006466898);
 	const static auto& cmd_argc = reinterpret_cast<std::uint32_t*>(0x01B7418C);
@@ -186,21 +187,22 @@ namespace game
 	const static auto& g_IWLobbyJoinInProgress = *reinterpret_cast<bool*>(offsets::g_IWLobbyJoinInProgress);
 	const static auto& inviteState = *reinterpret_cast<std::uint32_t*>(offsets::inviteState);
 	const static auto& sv_serverId_value = *reinterpret_cast<int*>(0x02022928);
-	
-	extern gentity_s* gentity;
-	extern sv_clients_t* svs_client;
+	const static auto& svs_numclients = *reinterpret_cast<int*>(0x03172088);
+	const static auto& hwnd = *reinterpret_cast<HWND*>(offsets::window);
+
+	extern client_t* svs_clients;
 
 	void initialize();
-	size_t get_client_num(const game::PartyMember * member);
-	size_t get_client_num(const game::client_t * client);
+	size_t get_client_num(const PartyMember * member);
+	size_t get_client_num(const client_t * client);
 	char* I_strncpyz(char* place, const std::string& string, const size_t length);
-	bool is_authed_user(const game::client_t& client);
-	bool is_authed_user(const size_t client_num);
-	bool is_authed_user(const game::netadr_t & target);
+	bool is_authed_client(const game::client_t & client);
+	bool is_authed_client(const size_t client_num);
+	bool is_authed_client(const netadr_t & target);
+	void for_each_authed_client(const size_t count, const std::function<void(size_t)>& callback);
 	void send_server_command(const int client_num, const std::string & command);
-	netadr_t net_string_to_adr(const std::string & adr);
 	connstate_t & CL_GetLocalClientConnectionState();
-	bool is_real_address(const game::XNADDR& xnaddr, const game::netadr_t& netadr);
+	bool is_real_address(const XNADDR& xnaddr, const netadr_t& netadr);
 
 	inline clientConnection_t* clc() {
 		return reinterpret_cast<clientConnection_t*>(0x00AB5E58);
@@ -208,9 +210,9 @@ namespace game
 	
 	inline PartyData_s* party_data()
 	{
-		static game::PartyData_s* party = nullptr;
-		if (game::g_lobbyData->in_party() || (party = game::g_partyData, !game::g_partyData->in_party()))
-			party = game::g_lobbyData;
+		static PartyData_s* party = nullptr;
+		if (g_lobbyData->in_party() || (party = g_partyData, !g_partyData->in_party()))
+			party = g_lobbyData;
 
 		return party;
 	}

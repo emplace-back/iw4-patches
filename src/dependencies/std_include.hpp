@@ -31,3 +31,4 @@ using namespace std::literals;
 #include "core/network/network.hpp"
 #include "core/scheduler/scheduler.hpp"
 #include "core/exception/exception.hpp"
+#include "core/input/input.hpp"

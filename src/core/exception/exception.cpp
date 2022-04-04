@@ -10,14 +10,10 @@ namespace exception
 
 		if (code != STATUS_INTEGER_OVERFLOW
 			&& code != STATUS_FLOAT_OVERFLOW
-			&& code != STATUS_SINGLE_STEP)
+			&& code != STATUS_SINGLE_STEP
+			&& code != EXCEPTION_STACK_OVERFLOW)
 		{
-			auto error = "Termination due to a stack overflow."s;
-			if (code != EXCEPTION_STACK_OVERFLOW)
-			{
-				error = utils::string::va("Exception: 0x%08X at 0x%08X", code, addr);
-			}
-
+			const auto error = utils::string::va("Exception: 0x%08X at 0x%08X", code, addr);
 			game::Com_Error(game::ERR_DROP, error.data());
 		}
 
