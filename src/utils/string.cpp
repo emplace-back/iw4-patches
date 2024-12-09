@@ -7,7 +7,7 @@ namespace utils::string
 	{
 		const std::pair<std::string, std::string> chat_filters[] =
 		{
-			{"(?:[1il]nurf[4a]c[3e])|(?:s[il1]d[4a]z)|(?:v[0o]rtex)|(?:r[0o]si[3e])", "retard"},
+			{"(?:[1il]nurf[4a]c[3e])|(?:s[il1]d[4a]z)|(?:v[0o]rtex)|(?:r[0o]si[3e])", "retard" },
 			{"k *k *k\\b", "BLM"},
 			{"hurensohn", "I'm a dumb german."},
 			{"f[a4@e]g(?:g[0oi1]t)?\\b", "heterosexual"},

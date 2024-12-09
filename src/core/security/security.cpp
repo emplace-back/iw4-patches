@@ -195,9 +195,9 @@ namespace security
 				char data[1024] = { 0 };
 				game::MSG_ReadString(&msg, data, sizeof data);
 
-				auto message{ "Relay packet prevented"s };
-				if (data && *data) message.append(" ["s + utils::string::strip(data) + "]");
-				message.append(" from " + network::get_sender_string(target));
+				auto message{ "Relay packet prevented from " + network::get_sender_string(target) };
+				//if (data && *data) message.append(" ["s + utils::string::strip(data) + "]");
+				//message.append(" from " + network::get_sender_string(target));
 				game::send_server_command(client_num, "f \"" + message + "\"");
 				
 				return true;
